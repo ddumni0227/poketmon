@@ -25,7 +25,7 @@ const Navbar = () => {
         <form className="search" onSubmit={handleSearch}>
           <input
             type="text"
-            placeholder="포켓몬이름 검색하기"
+            placeholder="포켓몬 이름 검색하기"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           ></input>

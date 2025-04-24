@@ -1,0 +1,68 @@
+.main-bg {
+  background: #c6c6c6;
+  min-height: 100vh;
+  padding: 30px;
+}
+
+.poketmon_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 32px;
+  justify-items: center;
+}
+
+.poketmon_card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 0 #808080;
+  padding: 24px 16px 16px 16px;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+  &:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 8px 8px 0 0 #d32f2f;
+  }
+  img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    image-rendering: pixelated;
+  }
+  .poketmon_name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    color: #222;
+    text-align: center;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+
+    .heart_btn {
+      background: none;
+      border: none;
+      font-size: 1.2em;
+      color: #d32f2f;
+      cursor: pointer;
+      transition: transform 0.1s;
+      &:active {
+        transform: scale(1.4);
+      }
+    }
+  }
+}
+
+.loading {
+  color: #fff;
+  text-align: center;
+  padding: 100px 0;
+  font-size: 2rem;
+}
