@@ -4,6 +4,20 @@ import axios from "axios";
 import { useFavorite } from "../../context/FavoriteContext";
 import "./Detail.scss";
 
+const getKoreanName = async (id, fallbackName) => {
+  try {
+    const res = await axios.get(
+      `https://pokeapi.co/api/v2/pokemon-species/${id}`
+    );
+    return (
+      res.data.names.find((name) => name.language.name === "ko")?.name ||
+      fallbackName
+    );
+  } catch {
+    return fallbackName;
+  }
+};
+
 const Detail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -17,29 +31,42 @@ const Detail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const pokemonRes = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        const speciesRes = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+        // 1. 포켓몬 정보
+        const pokemonRes = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon/${id}`
+        );
+        const speciesRes = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon-species/${id}`
+        );
 
         const koreanName =
-          speciesRes.data.names.find((name) => name.language.name === "ko")?.name ||
-          pokemonRes.data.name;
+          speciesRes.data.names.find((name) => name.language.name === "ko")
+            ?.name || pokemonRes.data.name;
 
         const flavorText =
-          speciesRes.data.flavor_text_entries.find(
-            (entry) => entry.language.name === "ko"
-          )?.flavor_text.replace(/\n|\f/g, " ") || "";
+          speciesRes.data.flavor_text_entries
+            .find((entry) => entry.language.name === "ko")
+            ?.flavor_text.replace(/\n|\f/g, " ") || "";
 
+        // 2. 진화 정보
         const evolutionUrl = speciesRes.data.evolution_chain.url;
         const evolutionRes = await axios.get(evolutionUrl);
         const chain = evolutionRes.data.chain;
 
+        // 3. 진화 체인에서 id, 영문명, 한글명 추출
         const evolutionList = [];
         let current = chain;
-
         while (current) {
-          const evoId = current.species.url.split("/").filter(Boolean).pop();
-          const name = current.species.name;
-          evolutionList.push({ name, id: evoId });
+          const evoSpeciesUrl = current.species.url;
+          const evoId = evoSpeciesUrl.split("/").filter(Boolean).pop();
+          const evoName = current.species.name;
+          // 한글 이름 추가로 요청
+          const evoKoreanName = await getKoreanName(evoId, evoName);
+          evolutionList.push({
+            id: evoId,
+            name: evoName,
+            koreanName: evoKoreanName,
+          });
           current = current.evolves_to[0];
         }
 
@@ -57,6 +84,7 @@ const Detail = () => {
         setLoading(false);
       } catch (error) {
         console.error("상세 정보 로딩 실패", error);
+        setLoading(false);
       }
     };
 
@@ -121,9 +149,9 @@ const Detail = () => {
               >
                 <img
                   src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${evo.id}.png`}
-                  alt={evo.name}
+                  alt={evo.koreanName}
                 />
-                <p>{evo.name}</p>
+                <p>{evo.koreanName}</p>
               </div>
             ))}
           </div>
@@ -134,5 +162,3 @@ const Detail = () => {
 };
 
 export default Detail;
-
-
