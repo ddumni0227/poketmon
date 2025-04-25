@@ -1,37 +1,43 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Main.scss";
+import { useFavorite } from "../../context/FavoriteContext";
 
 const Main = () => {
-  const [pokemonList, setPoketmonList] = useState([]);
+  const [pokemonList, setPokemonList] = useState([]);
+  const [displayCount, setDisplayCount] = useState(42);
   const [loading, setLoading] = useState(true);
-  const [favorites, setFavorites] = useState([]); // 찜한 포켓몬 id 배열
+  const { favorites, toggleFavorites } = useFavorite();
 
   useEffect(() => {
     const fetchPoketmons = async () => {
       try {
-        // 1~12번 예시만 가져오기 (원하면 limit 조절)
-        const response = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=100");
+        const response = await axios.get(
+          "https://pokeapi.co/api/v2/pokemon?limit=280"
+        );
         const { results } = response.data;
 
-        const poketmonData = await Promise.all(
+        const pokemonData = await Promise.all(
           results.map(async (pokemon) => {
-            const poketmonRes = await axios.get(pokemon.url);
+            const pokemonRes = await axios.get(pokemon.url);
             const speciesRes = await axios.get(
-              `https://pokeapi.co/api/v2/pokemon-species/${poketmonRes.data.id}`
+              `https://pokeapi.co/api/v2/pokemon-species/${pokemonRes.data.id}`
             );
-            const koreanName = speciesRes.data.names.find(
-              (name) => name.language.name === "ko"
-            )?.name || poketmonRes.data.name;
+            const koreanName =
+              speciesRes.data.names.find((name) => name.language.name === "ko")
+                ?.name || pokemonRes.data.name;
+
             return {
-              id: poketmonRes.data.id,
-              name: poketmonRes.data.name,
-              koreanName: koreanName,
-              image: poketmonRes.data.sprites.front_default,
+              id: pokemonRes.data.id,
+              name: pokemonRes.data.name,
+              koreanName,
+              image: pokemonRes.data.sprites.front_default,
             };
           })
         );
-        setPoketmonList(poketmonData);
+
+        setPokemonList(pokemonData);
         setLoading(false);
       } catch (error) {
         console.error("포켓몬 데이터 로딩 오류:", error);
@@ -42,11 +48,14 @@ const Main = () => {
     fetchPoketmons();
   }, []);
 
-  // 하트(찜) 토글 함수
   const toggleFavorite = (id) => {
-    setFavorites((prev) =>
+    toggleFavorites((prev) =>
       prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
     );
+  };
+
+  const handleLoadMore = () => {
+    setDisplayCount((prev) => Math.min(prev + 42, pokemonList.length));
   };
 
   if (loading) return <div className="loading">로딩 중...</div>;
@@ -54,26 +63,38 @@ const Main = () => {
   return (
     <div className="main-bg">
       <div className="poketmon_grid">
-        {pokemonList.map((pokemon) => (
-          <div className="poketmon_card" key={pokemon.id}>
+        {pokemonList.slice(0, displayCount).map((pokemon) => (
+          <Link
+            to={`/detail/${pokemon.id}`}
+            className="poketmon_card"
+            key={pokemon.id}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
             <img src={pokemon.image} alt={pokemon.koreanName} />
             <div className="poketmon_name">
               {pokemon.koreanName}
               <button
                 className="heart_btn"
-                onClick={() => toggleFavorite(pokemon.id)}
-                aria-label="찜하기"
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleFavorite(pokemon.id);
+                }}
               >
                 {favorites.includes(pokemon.id) ? "♥" : "♡"}
               </button>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
+
+      {/* 더보기 버튼 */}
+      {displayCount < pokemonList.length && (
+        <div className="load-more">
+          <button onClick={handleLoadMore}>더보기 ▽</button>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Main;
-
-

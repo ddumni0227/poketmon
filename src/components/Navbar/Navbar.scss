@@ -18,7 +18,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: larger;
+    font-size: 30px;
   }
   .menu {
     display: flex;
@@ -29,6 +29,7 @@
     background-color: white;
     padding: 10px;
     border-bottom: 1px solid rgb(214, 214, 214);
+    font-size: 20px;
 
     .nav a {
       color: black;
@@ -48,6 +49,7 @@
       padding: 8px 12px;
       border: none;
       border-bottom: 1px solid rgb(199, 198, 198);
+      font-size: 15px;
     }
 
     button {
@@ -55,7 +57,7 @@
       background-color: white;
       border: none;
       cursor: pointer;
-      font-size: large;
+      font-size: 20px;
     }
   }
 }
