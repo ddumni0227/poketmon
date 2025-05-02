@@ -1,3 +1,4 @@
+// src/components/Navbar/Navbar.jsx
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
@@ -9,7 +10,9 @@ const Navbar = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim() === "") return;
-    nav(`/search?name=${searchTerm.toLowerCase()}`);
+
+    localStorage.setItem("searchKeyword", searchTerm.trim()); // ✅ 저장
+    nav("/search", { state: { keyword: searchTerm.trim() } });
     setSearchTerm("");
   };
 
@@ -28,7 +31,7 @@ const Navbar = () => {
             placeholder="포켓몬 이름 검색하기"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-          ></input>
+          />
           <button type="submit">🔍</button>
         </form>
       </div>
@@ -37,3 +40,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
