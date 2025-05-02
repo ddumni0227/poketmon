@@ -51,7 +51,7 @@ const Favorite = () => {
 
   return (
     <div className="favorite-container">
-      <h2>❤️ 찜한 포켓몬</h2>
+      <h2>❤️ 나의 포켓몬 ❤️</h2>
       {poketmonList.length === 0 ? (
         <p className="empty">아직 찜한 포켓몬이 없어요!</p>
       ) : (
