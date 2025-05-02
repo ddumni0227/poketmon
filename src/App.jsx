@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Main from "./page/main/Main";
 import Detail from "./page/Detail/Detail";
 import { FavoriteProvider } from "./context/FavoriteContext";
+import Favorite from "./page/Favorite/Favorite";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/favorites" element={<Favorite />} />
         </Routes>
       </Router>
     </FavoriteProvider>

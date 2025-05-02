@@ -3,6 +3,7 @@
   justify-content: center;
   padding: 40px;
   background-color: #fff3f3;
+  margin-top: 130px;
 }
 
 .detail-card {
@@ -93,6 +94,15 @@
         }
         &.fairy {
           background-color: #fdcbf8;
+          color: #ffffff;
+        }
+        &.dragon {
+          background-color: #ffb96a;
+          color: #ffffff;
+        }
+        &.ground {
+          background-color: #553d21;
+          color: #ffffff;
         }
       }
     }

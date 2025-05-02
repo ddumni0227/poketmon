@@ -1,3 +1,4 @@
+// src/pages/Main/Main.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -8,7 +9,8 @@ const Main = () => {
   const [pokemonList, setPokemonList] = useState([]);
   const [displayCount, setDisplayCount] = useState(42);
   const [loading, setLoading] = useState(true);
-  const { favorites, toggleFavorites } = useFavorite();
+
+  const { favorites, toggleFavorite } = useFavorite(); // ✅ 함수명 수정
 
   useEffect(() => {
     const fetchPoketmons = async () => {
@@ -48,12 +50,6 @@ const Main = () => {
     fetchPoketmons();
   }, []);
 
-  const toggleFavorite = (id) => {
-    toggleFavorites((prev) =>
-      prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
-    );
-  };
-
   const handleLoadMore = () => {
     setDisplayCount((prev) => Math.min(prev + 42, pokemonList.length));
   };
@@ -76,8 +72,8 @@ const Main = () => {
               <button
                 className="heart_btn"
                 onClick={(e) => {
-                  e.preventDefault();
-                  toggleFavorite(pokemon.id);
+                  e.preventDefault(); // 링크 방지
+                  toggleFavorite(pokemon.id); // ✅ 올바른 호출
                 }}
               >
                 {favorites.includes(pokemon.id) ? "♥" : "♡"}
