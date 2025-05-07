@@ -1,16 +1,21 @@
 // src/pages/Main/Main.jsx
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Main.scss";
 import { useFavorite } from "../../context/FavoriteContext";
+import PoketmonCard from "../../components/PoketmonCard/PoketmonCard";
+import LoadMoreButton from "../../components/LoadmoreButton/LoadMoreButton";
+import FilterBar from "../../components/Filter/Filter";
 
 const Main = () => {
-  const [pokemonList, setPokemonList] = useState([]);
+  const [poketmonList, setPoketmonList] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
   const [displayCount, setDisplayCount] = useState(42);
   const [loading, setLoading] = useState(true);
+  const [selectedType, setSelectedType] = useState("전체");
+  const [sortBy, setSortBy] = useState("id");
 
-  const { favorites, toggleFavorite } = useFavorite(); // ✅ 함수명 수정
+  const { favorites, toggleFavorite } = useFavorite();
 
   useEffect(() => {
     const fetchPoketmons = async () => {
@@ -20,29 +25,30 @@ const Main = () => {
         );
         const { results } = response.data;
 
-        const pokemonData = await Promise.all(
-          results.map(async (pokemon) => {
-            const pokemonRes = await axios.get(pokemon.url);
-            const speciesRes = await axios.get(
-              `https://pokeapi.co/api/v2/pokemon-species/${pokemonRes.data.id}`
-            );
-            const koreanName =
-              speciesRes.data.names.find((name) => name.language.name === "ko")
-                ?.name || pokemonRes.data.name;
+        const data = [];
 
-            return {
-              id: pokemonRes.data.id,
-              name: pokemonRes.data.name,
-              koreanName,
-              image: pokemonRes.data.sprites.front_default,
-            };
-          })
-        );
+        for (const poketmon of results) {
+          const detailRes = await axios.get(poketmon.url);
+          const speciesRes = await axios.get(
+            `https://pokeapi.co/api/v2/pokemon-species/${detailRes.data.id}`
+          );
+          const koreanName =
+            speciesRes.data.names.find((name) => name.language.name === "ko")
+              ?.name || detailRes.data.name;
 
-        setPokemonList(pokemonData);
+          data.push({
+            id: detailRes.data.id,
+            name: detailRes.data.name,
+            korean_name: koreanName,
+            image: detailRes.data.sprites.front_default,
+            types: detailRes.data.types.map((t) => t.type.name),
+          });
+        }
+
+        setPoketmonList(data);
         setLoading(false);
-      } catch (error) {
-        console.error("포켓몬 데이터 로딩 오류:", error);
+      } catch (err) {
+        console.error("포켓몬 로딩 오류", err);
         setLoading(false);
       }
     };
@@ -50,44 +56,52 @@ const Main = () => {
     fetchPoketmons();
   }, []);
 
+  useEffect(() => {
+    let result = [...poketmonList];
+
+    if (selectedType !== "전체") {
+      result = result.filter((p) => p.types.includes(selectedType));
+    }
+
+    if (sortBy === "korean_asc") {
+      result.sort((a, b) => a.korean_name.localeCompare(b.korean_name));
+    } else if (sortBy === "korean_desc") {
+      result.sort((a, b) => b.korean_name.localeCompare(a.korean_name));
+    } else {
+      result.sort((a, b) => a.id - b.id);
+    }
+
+    setFilteredList(result);
+  }, [poketmonList, selectedType, sortBy]);
+
   const handleLoadMore = () => {
-    setDisplayCount((prev) => Math.min(prev + 42, pokemonList.length));
+    setDisplayCount((prev) => Math.min(prev + 42, filteredList.length));
   };
 
   if (loading) return <div className="loading">로딩 중...</div>;
 
   return (
-    <div className="main-bg">
+    <div className="main_container">
+      <FilterBar
+        selectedType={selectedType}
+        setSelectedType={setSelectedType}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+      />
+
       <div className="poketmon_grid">
-        {pokemonList.slice(0, displayCount).map((pokemon) => (
-          <Link
-            to={`/detail/${pokemon.id}`}
-            className="poketmon_card"
-            key={pokemon.id}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <img src={pokemon.image} alt={pokemon.koreanName} />
-            <div className="poketmon_name">
-              {pokemon.koreanName}
-              <button
-                className="heart_btn"
-                onClick={(e) => {
-                  e.preventDefault(); // 링크 방지
-                  toggleFavorite(pokemon.id); // ✅ 올바른 호출
-                }}
-              >
-                {favorites.includes(pokemon.id) ? "♥" : "♡"}
-              </button>
-            </div>
-          </Link>
+        {filteredList.slice(0, displayCount).map((poketmon) => (
+          <PoketmonCard
+            key={poketmon.id}
+            poketmon={poketmon}
+            isFavorite={favorites.includes(poketmon.id)}
+            onToggleFavorite={toggleFavorite}
+          />
         ))}
       </div>
 
-      {/* 더보기 버튼 */}
-      {displayCount < pokemonList.length && (
-        <div className="load-more">
-          <button onClick={handleLoadMore}>더보기 ▽</button>
-        </div>
+      {displayCount < filteredList.length && (
+        <LoadMoreButton onClick={handleLoadMore} />
       )}
     </div>
   );

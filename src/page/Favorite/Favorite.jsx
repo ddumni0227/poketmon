@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useFavorite } from "../../context/FavoriteContext";
+import PoketmonCard from "../../components/PoketmonCard/PoketmonCard";
 import "./Favorite.scss";
 
 const Favorite = () => {
@@ -23,10 +24,11 @@ const Favorite = () => {
             const koreanName =
               speciesRes.data.names.find((name) => name.language.name === "ko")
                 ?.name || pokemonRes.data.name;
+
             return {
               id: pokemonRes.data.id,
               name: pokemonRes.data.name,
-              koreanName,
+              korean_name: koreanName,
               image: pokemonRes.data.sprites.front_default,
             };
           })
@@ -39,6 +41,7 @@ const Favorite = () => {
         setLoading(false);
       }
     };
+
     if (favorites.length > 0) {
       fetchFavorites();
     } else {
@@ -50,32 +53,28 @@ const Favorite = () => {
   if (loading) return <div className="loading">로딩 중...</div>;
 
   return (
-    <div className="favorite-container">
+    <div className="favorite_container">
       <h2>❤️ 나의 포켓몬 ❤️</h2>
       {poketmonList.length === 0 ? (
         <p className="empty">아직 찜한 포켓몬이 없어요!</p>
       ) : (
-        <div className="favorite-grid">
-          {poketmonList.map((pokemon) => (
+        <div className="favorite_grid">
+          {poketmonList.map((poketmon, index) => (
             <Link
-              to={`/detail/${pokemon.id}`}
-              className="favorite-card"
-              key={pokemon.id}
+              to={`/detail/${poketmon.id}`}
+              key={poketmon.id}
+              state={{
+                fromFavorites: true,
+                favoritesList: poketmonList,
+                currentIndex: index,
+              }}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <img src={pokemon.image} alt={pokemon.koreanName} />
-              <div className="pokemon-name">
-                {pokemon.koreanName}
-                <button
-                  className="heart-btn"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleFavorite(pokemon.id);
-                  }}
-                >
-                  ♥
-                </button>
-              </div>
+              <PoketmonCard
+                poketmon={poketmon}
+                isFavorite={favorites.includes(poketmon.id)}
+                onToggleFavorite={toggleFavorite}
+              />
             </Link>
           ))}
         </div>

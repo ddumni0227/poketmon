@@ -1,15 +1,15 @@
-.detail-container {
+.detail_container {
   display: flex;
   justify-content: center;
-  padding: 40px;
+  padding: 30px;
   background-color: #fff3f3;
-  margin-top: 130px;
+  margin-top: 105px;
 }
 
-.detail-card {
+.detail_card {
   background-color: #ffffff;
   border-radius: 20px;
-  padding: 30px;
+  padding: 20px 30px;
   text-align: center;
   width: 300px;
   box-shadow: 0 4px 10px rgb(196, 196, 196);
@@ -24,7 +24,7 @@
     font-size: 24px;
     position: relative;
 
-    .heart-btn {
+    .heart_btn {
       background: none;
       border: none;
       font-size: 26px;
@@ -33,82 +33,72 @@
     }
   }
 
-  .eng-name {
+  .eng_name {
     font-size: 14px;
     color: #888;
-    margin-bottom: 20px;
     margin-top: 0;
   }
+
   .description {
     font-size: 15px;
     font-weight: bold;
     color: #333;
     line-height: 1.5;
-    margin: 20px 30px 30px;
+    margin: 20px 30px;
   }
 
-  .types {
+  .type_list {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
     margin-bottom: 10px;
 
-    .type-list {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
+    .type_badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      color: #ffffff;
+      font-weight: bold;
+      text-transform: capitalize;
 
-      .type-badge {
-        padding: 6px;
-        border-radius: 20px;
-        color: rgb(0, 0, 0);
-        font-weight: bold;
-        text-transform: capitalize;
-
-        &.fire {
-          background-color: #f08030;
-          color: #ffffff;
-        }
-        &.water {
-          background-color: #6890f0;
-          color: #ffffff;
-        }
-        &.grass {
-          background-color: #78c850;
-          color: #ffffff;
-        }
-        &.electric {
-          background-color: #f8d030;
-        }
-        &.normal {
-          background-color: #a8a878;
-          color: #ffffff;
-        }
-        &.bug {
-          background-color: #016113;
-          color: #ffffff;
-        }
-        &.poison {
-          background-color: #8535ba;
-          color: #ffffff;
-        }
-        &.flying {
-          background-color: #c0e8ff;
-        }
-        &.fairy {
-          background-color: #fdcbf8;
-          color: #ffffff;
-        }
-        &.dragon {
-          background-color: #ffb96a;
-          color: #ffffff;
-        }
-        &.ground {
-          background-color: #553d21;
-          color: #ffffff;
-        }
+      &.fire {
+        background-color: #f08030;
+      }
+      &.water {
+        background-color: #6890f0;
+      }
+      &.grass {
+        background-color: #78c850;
+      }
+      &.electric {
+        background-color: #f8d030;
+        color: #000;
+      }
+      &.normal {
+        background-color: #a8a878;
+      }
+      &.bug {
+        background-color: #016113;
+      }
+      &.poison {
+        background-color: #8535ba;
+      }
+      &.flying {
+        background-color: #c0e8ff;
+        color: #000;
+      }
+      &.fairy {
+        background-color: #fdcbf8;
+      }
+      &.dragon {
+        background-color: #ffb96a;
+      }
+      &.ground {
+        background-color: #553d21;
       }
     }
   }
 
-  .stats-toggle {
+  .stats_toggle {
     margin-bottom: 10px;
 
     button {
@@ -138,18 +128,18 @@
   .evolution {
     margin-top: 30px;
 
-    .evolution-chain {
+    .evolution_chain {
       display: flex;
       justify-content: center;
-      gap: 10px;
+      gap: 5px;
 
-      .evolution-item {
+      .evolution_item {
         text-align: center;
         cursor: pointer;
-        border: 1px solid rgb(253, 230, 230);
+        border: 1px solid #ffd6d6;
         border-radius: 10px;
         padding: 10px;
-        box-shadow: 0 4px 10px rgb(255, 243, 243);
+
 
         img {
           width: 60px;
@@ -165,6 +155,27 @@
           font-size: 14px;
           margin-top: 5px;
         }
+      }
+    }
+  }
+
+  .nav_buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    button {
+      padding: 8px 16px;
+      background-color: #ef5350;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
       }
     }
   }
