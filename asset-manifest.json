@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/poketmon/static/css/main.4c578269.css",
+    "main.css": "/poketmon/static/css/main.a740b7ab.css",
     "main.js": "/poketmon/static/js/main.248c58ab.js",
     "index.html": "/poketmon/index.html",
-    "main.4c578269.css.map": "/poketmon/static/css/main.4c578269.css.map",
+    "main.a740b7ab.css.map": "/poketmon/static/css/main.a740b7ab.css.map",
     "main.248c58ab.js.map": "/poketmon/static/js/main.248c58ab.js.map"
   },
   "entrypoints": [
-    "static/css/main.4c578269.css",
+    "static/css/main.a740b7ab.css",
     "static/js/main.248c58ab.js"
   ]
 }
