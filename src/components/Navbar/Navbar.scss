@@ -81,7 +81,42 @@
     }
 
     @media (max-width: 600px) {
-      font-size: 10px;
+      .logo {
+        font-size: 16px;
+        padding: 5px 0;
+        height: 18px;
+      }
+      .menu {
+        font-size: 13px;
+        padding: 5px 0;
+        height: 18px;
+        .nav a {
+          font-size: 13px;
+          margin-left: 12px;
+          &:hover {
+            font-size: 15px;
+          }
+        }
+      }
+      .redline {
+        height: 24px;
+        .darkmode_btn {
+          font-size: 11px;
+          padding: 4px;
+          right: 8px;
+        }
+      }
+      .search {
+        input {
+          font-size: 13px;
+          padding: 4px 6px;
+          width: 80px;
+        }
+        button {
+          font-size: 15px;
+          padding: 1px;
+        }
+      }
     }
   }
 }
