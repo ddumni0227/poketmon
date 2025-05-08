@@ -6,6 +6,9 @@ body,
 body.dark {
   background-color: #454545;
   color: #f5f5f5;
+  .redline {
+    background-color: #999898;
+  }
 
   .main_container,
   .filter_bar,
@@ -25,12 +28,29 @@ body.dark {
     }
   }
   .search-card,
-  .detail_card,
   .poketmon_card,
   select {
     background-color: #999898;
     color: white;
     border: 1px solid #ffffff;
+  }
+  .detail_card {
+    background-color: #999898;
+    color: white;
+    border: 1px solid #ffffff;
+
+    .eng_name,
+    .description,
+    .exp_bar {
+      color: #ffffff;
+    }
+    .evolution {
+      
+    .evolution_item {
+      background-color: #9d9c9c;
+      color: #ffffff;
+      border: 1px solid white;
+    }}
   }
 
   .search-bar {
