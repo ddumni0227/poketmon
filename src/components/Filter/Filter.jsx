@@ -5,13 +5,12 @@ const FilterBar = ({
   setSelectedType,
   nameSort,
   setNameSort,
-  expSort,
-  setExpSort,
-  statSort,
-  setStatSort,
+  expStatSort,
+  setExpStatSort,
 }) => {
   return (
     <div className="filter_bar">
+      {/* 타입 필터 */}
       <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
         {["전체", "fire", "water", "grass", "electric", "bug", "normal", "poison", "flying"].map((type) => (
           <option key={type} value={type}>
@@ -20,41 +19,24 @@ const FilterBar = ({
         ))}
       </select>
 
+      {/* 이름(가나다) 정렬 */}
       <select
         value={nameSort}
-        onChange={(e) => {
-          setNameSort(e.target.value);
-          setExpSort("");
-          setStatSort("");
-        }}
+        onChange={(e) => setNameSort(e.target.value)}
       >
         <option value="id">번호순</option>
         <option value="korean_asc">가나다순</option>
         <option value="korean_desc">가나다 역순</option>
       </select>
 
+      {/* 경험치/능력치 통합 정렬 */}
       <select
-        value={expSort}
-        onChange={(e) => {
-          setExpSort(e.target.value);
-          setNameSort("id");
-          setStatSort("");
-        }}
+        value={expStatSort}
+        onChange={(e) => setExpStatSort(e.target.value)}
       >
-        <option value="">경험치 정렬</option>
+        <option value="">경험치/능력치</option>
         <option value="exp_desc">경험치 높은 순</option>
         <option value="exp_asc">경험치 낮은 순</option>
-      </select>
-
-      <select
-        value={statSort}
-        onChange={(e) => {
-          setStatSort(e.target.value);
-          setExpSort("");
-          setNameSort("id");
-        }}
-      >
-        <option value="">능력치 정렬</option>
         <option value="hp_desc">HP 높은 순</option>
         <option value="hp_asc">HP 낮은 순</option>
         <option value="attack_desc">공격력 높은 순</option>
@@ -67,4 +49,5 @@ const FilterBar = ({
 };
 
 export default FilterBar;
+
 
