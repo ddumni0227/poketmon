@@ -1,32 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Search.scss";
+import { useLocation } from "react-router-dom";
 import { useFavorite } from "../../context/FavoriteContext";
 
 const Search = () => {
-  const navigate = useNavigate();
   const { favorites, toggleFavorite } = useFavorite();
-
+  const location = useLocation();
   const savedKeyword = localStorage.getItem("searchKeyword") || "";
-  const [searchTerm, setSearchTerm] = useState("");
-  const [activeKeyword, setActiveKeyword] = useState(savedKeyword);
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [displayCount, setDisplayCount] = useState(16);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchTerm.trim() === "") return;
-    localStorage.setItem("searchKeyword", searchTerm.trim());
-    setActiveKeyword(searchTerm.trim());
-    setSearchTerm("");
-    setDisplayCount(16);
-    navigate("/search");
-  };
-
   useEffect(() => {
-    if (!activeKeyword) return;
+    if (!savedKeyword) return;
 
     const fetchSearchResult = async () => {
       setLoading(true);
@@ -47,7 +35,7 @@ const Search = () => {
             species.data.names.find((name) => name.language.name === "ko")
               ?.name || res.data.name;
 
-          if (koreanName.includes(activeKeyword)) {
+          if (koreanName.includes(savedKeyword)) {
             detailed.push({
               id: res.data.id,
               name: res.data.name,
@@ -66,7 +54,7 @@ const Search = () => {
     };
 
     fetchSearchResult();
-  }, [activeKeyword]);
+  }, [savedKeyword]);
 
   const handleLoadMore = () => {
     setDisplayCount((prev) => Math.min(prev + 16, result.length));
@@ -74,22 +62,10 @@ const Search = () => {
 
   return (
     <div className="search-container">
-      <form className="search-bar" onSubmit={handleSearch}>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="포켓몬 이름 검색하기"
-        />
-        <button type="submit">🔍</button>
-      </form>
-
-      {activeKeyword && (
-        <h3 className="result-text">
-          🔍 <strong>' {activeKeyword} '</strong> 검색결과 총 {""}
-          <strong>{result.length}</strong> 건
-        </h3>
-      )}
+      <h3 className="result-text">
+        🔍 <strong>' {savedKeyword} '</strong> 검색결과 총{" "}
+        <strong>{result.length}</strong> 건
+      </h3>
 
       {loading ? (
         <div className="loading">로딩 중...</div>

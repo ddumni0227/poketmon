@@ -11,6 +11,22 @@
     background-color: red;
     width: 100vw;
     height: 35px;
+    position: relative;
+
+    .darkmode_btn {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: white;
+      font-weight: bold;
+      
+    }
   }
   .logo {
     background-color: black;

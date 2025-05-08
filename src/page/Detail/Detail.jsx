@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useFavorite } from "../../context/FavoriteContext";
 import "./Detail.scss";
@@ -20,13 +20,8 @@ const getKoreanName = async (id, fallbackName) => {
 
 const Detail = () => {
   const { id } = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
   const { favorites, toggleFavorite } = useFavorite();
-
-  const fromFavorites = location.state?.fromFavorites;
-  const favoritesList = location.state?.favoritesList || [];
-  const currentIndex = location.state?.currentIndex ?? -1;
 
   const [poketmon, setPoketmon] = useState(null);
   const [description, setDescription] = useState("");
@@ -78,6 +73,7 @@ const Detail = () => {
           image: poketmonRes.data.sprites.front_default,
           types: poketmonRes.data.types,
           stats: poketmonRes.data.stats,
+          base_experience: poketmonRes.data.base_experience,
         });
 
         setDescription(flavorText);
@@ -91,20 +87,6 @@ const Detail = () => {
 
     fetchData();
   }, [id]);
-
-  const handleMove = (direction) => {
-    const newIndex = currentIndex + direction;
-    if (newIndex >= 0 && newIndex < favoritesList.length) {
-      const next = favoritesList[newIndex];
-      navigate(`/detail/${next.id}`, {
-        state: {
-          fromFavorites: true,
-          favoritesList,
-          currentIndex: newIndex,
-        },
-      });
-    }
-  };
 
   if (loading || !poketmon) return <div className="loading">로딩 중...</div>;
 
@@ -122,8 +104,9 @@ const Detail = () => {
           </button>
         </h2>
         <p className="eng_name">({poketmon.name})</p>
-
+        
         {description && <p className="description">{description}</p>}
+
 
         <div className="type_list">
           {poketmon.types.map((type, idx) => (
@@ -133,10 +116,15 @@ const Detail = () => {
           ))}
         </div>
 
+
+        
         <div className="stats_toggle">
           <button onClick={() => setShowStats(!showStats)}>
             {showStats ? "능력치 접기 ▲" : "능력치 보기 ▼"}
           </button>
+          <div className="exp_bar">
+          <strong>경험치: </strong> {poketmon.base_experience}
+        </div>
         </div>
 
         {showStats && (
@@ -167,23 +155,6 @@ const Detail = () => {
             ))}
           </div>
         </div>
-
-        {fromFavorites && (
-          <div className="nav_buttons">
-            <button
-              onClick={() => handleMove(-1)}
-              disabled={currentIndex === 0}
-            >
-              ◀ 이전
-            </button>
-            <button
-              onClick={() => handleMove(1)}
-              disabled={currentIndex === favoritesList.length - 1}
-            >
-              다음 ▶
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

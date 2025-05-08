@@ -61,7 +61,7 @@ const Favorite = () => {
         <div className="favorite_grid">
           {poketmonList.map((poketmon, index) => (
             <Link
-              to={`/detail/${poketmon.id}`}
+              to={`/favorite/detail/${poketmon.id}`}
               key={poketmon.id}
               state={{
                 fromFavorites: true,

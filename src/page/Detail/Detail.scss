@@ -1,17 +1,19 @@
 .detail_container {
+  position: relative;
   display: flex;
   justify-content: center;
-  padding: 30px;
+  align-items: center;
+  padding: 40px 0;
   background-color: #fff3f3;
-  margin-top: 105px;
+  margin-top: 100px;
 }
 
 .detail_card {
   background-color: #ffffff;
   border-radius: 20px;
-  padding: 20px 30px;
+  padding: 40px;
   text-align: center;
-  width: 300px;
+  width: 320px;
   box-shadow: 0 4px 10px rgb(196, 196, 196);
 
   img {
@@ -20,7 +22,7 @@
   }
 
   h2 {
-    margin: 2px 0;
+    margin: 0;
     font-size: 24px;
     position: relative;
 
@@ -44,58 +46,87 @@
     font-weight: bold;
     color: #333;
     line-height: 1.5;
-    margin: 20px 30px;
+    padding: 0 18px;
   }
 
   .type_list {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 6px;
     margin-bottom: 10px;
 
     .type_badge {
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 20px;
-      color: #ffffff;
       font-weight: bold;
       text-transform: capitalize;
+      color: white;
 
+      &.normal {
+        background-color: #a8a878;
+      }
       &.fire {
         background-color: #f08030;
       }
       &.water {
         background-color: #6890f0;
       }
+      &.electric {
+        background-color: #f8d030;
+        color: black;
+      }
       &.grass {
         background-color: #78c850;
       }
-      &.electric {
-        background-color: #f8d030;
-        color: #000;
+      &.ice {
+        background-color: #98d8d8;
+        color: black;
       }
-      &.normal {
-        background-color: #a8a878;
-      }
-      &.bug {
-        background-color: #016113;
+      &.fighting {
+        background-color: #c03028;
       }
       &.poison {
-        background-color: #8535ba;
-      }
-      &.flying {
-        background-color: #c0e8ff;
-        color: #000;
-      }
-      &.fairy {
-        background-color: #fdcbf8;
-      }
-      &.dragon {
-        background-color: #ffb96a;
+        background-color: #a040a0;
       }
       &.ground {
-        background-color: #553d21;
+        background-color: #e0c068;
+        color: black;
+      }
+      &.flying {
+        background-color: #a890f0;
+      }
+      &.psychic {
+        background-color: #f85888;
+      }
+      &.bug {
+        background-color: #a8b820;
+      }
+      &.rock {
+        background-color: #b8a038;
+      }
+      &.ghost {
+        background-color: #705898;
+      }
+      &.dragon {
+        background-color: #7038f8;
+      }
+      &.dark {
+        background-color: #705848;
+      }
+      &.steel {
+        background-color: #b8b8d0;
+        color: black;
+      }
+      &.fairy {
+        background-color: #ee99ac;
       }
     }
+  }
+
+  .exp_bar {
+    font-size: 14px;
+    margin: 4px;
+    color: #555;
   }
 
   .stats_toggle {
@@ -105,7 +136,7 @@
       background-color: #ef5350;
       border: none;
       color: white;
-      padding: 6px 12px;
+      padding: 8px 14px;
       border-radius: 20px;
       cursor: pointer;
       font-weight: bold;
@@ -113,33 +144,30 @@
   }
 
   .stats {
-    ul {
-      list-style: none;
-      padding: 0;
-      text-align: left;
+    list-style: none;
+    padding: 0;
+    text-align: left;
 
-      li {
-        margin: 6px 0;
-        font-size: 14px;
-      }
+    li {
+      margin: 6px 0;
+      font-size: 14px;
     }
   }
 
   .evolution {
-    margin-top: 30px;
+    margin-top: 20px;
 
     .evolution_chain {
       display: flex;
       justify-content: center;
-      gap: 5px;
+      gap: 10px;
 
       .evolution_item {
         text-align: center;
         cursor: pointer;
+        padding: 10px;
         border: 1px solid #ffd6d6;
         border-radius: 10px;
-        padding: 10px;
-
 
         img {
           width: 60px;
@@ -155,27 +183,6 @@
           font-size: 14px;
           margin-top: 5px;
         }
-      }
-    }
-  }
-
-  .nav_buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-
-    button {
-      padding: 8px 16px;
-      background-color: #ef5350;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-
-      &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
       }
     }
   }

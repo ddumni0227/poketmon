@@ -2,3 +2,45 @@ body,
 * {
   font-family: "Do Hyeon", sans-serif !important;
 }
+
+body.dark {
+  background-color: #454545;
+  color: #f5f5f5;
+
+  .main_container,
+  .filter_bar,
+  .detail_container {
+    background-color: #454545;
+    color: #f5f5f5;
+  }
+
+  .favorite_container {
+    background-color: #454545;
+    color: #f5f5f5;
+
+    h2 {
+      background-color: #999898;
+      color: white;
+      border: 1px solid #ffffff;
+    }
+  }
+  .search-card,
+  .detail_card,
+  .poketmon_card,
+  select {
+    background-color: #999898;
+    color: white;
+    border: 1px solid #ffffff;
+  }
+
+  .search-bar {
+    button {
+      background-color: #bab8b8;
+      color: white;
+    }
+  }
+
+  a {
+    color: #f5f5f5;
+  }
+}

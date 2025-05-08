@@ -13,7 +13,8 @@ const App = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/detail/:id" element={<Detail isFavoriteRoute={false} />} />
+          <Route path="/favorite/detail/:id" element={<Detail isFavoriteRoute={true} />} />
           <Route path="/favorites" element={<Favorite />} />
           <Route path="/search" element={<Search />} />
         </Routes>
@@ -23,3 +24,5 @@ const App = () => {
 };
 
 export default App;
+
+

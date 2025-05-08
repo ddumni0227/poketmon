@@ -1,14 +1,19 @@
+
 .filter_bar {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 8px;
+  margin-bottom: 20px;
+
+  select {
+    padding: 8px 2px;
+    border-radius: 8px;
+    font-size: 14px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgb(227, 227, 227);
+    cursor: pointer;
+  }
 }
 
-.filter_select {
-  padding: 8px 12px;
-  font-size: 14px;
-  border-radius: 6px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgb(227, 227, 227);
-}
+
+
