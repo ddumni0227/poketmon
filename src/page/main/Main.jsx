@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Main.scss";
 import { useFavorite } from "../../context/FavoriteContext";
@@ -14,8 +14,7 @@ const Main = () => {
 
   const [selectedType, setSelectedType] = useState("전체");
   const [nameSort, setNameSort] = useState("id");
-  const [expSort, setExpSort] = useState("");
-  const [statSort, setStatSort] = useState("");
+  const [sortOption, setSortOption] = useState("");
 
   const [visibleCount, setVisibleCount] = useState(30); // 초기에는 30개 표시
 
@@ -24,9 +23,7 @@ const Main = () => {
   useEffect(() => {
     const fetchPoketmons = async () => {
       try {
-        const response = await axios.get(
-          "https://pokeapi.co/api/v2/pokemon?limit=300"
-        );
+        const response = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=300");
         const { results } = response.data;
 
         const data = await Promise.all(
@@ -36,8 +33,8 @@ const Main = () => {
               `https://pokeapi.co/api/v2/pokemon-species/${detailRes.data.id}`
             );
             const koreanName =
-              speciesRes.data.names.find((name) => name.language.name === "ko")
-                ?.name || detailRes.data.name;
+              speciesRes.data.names.find((name) => name.language.name === "ko")?.name ||
+              detailRes.data.name;
 
             return {
               id: detailRes.data.id,
@@ -65,26 +62,27 @@ const Main = () => {
   useEffect(() => {
     let result = [...poketmonList];
 
+    // 타입 필터링
     if (selectedType !== "전체") {
       result = result.filter((p) => p.types.includes(selectedType));
     }
 
-    if (expSort) {
-      result.sort((a, b) =>
-        expSort === "exp_desc"
-          ? b.base_experience - a.base_experience
-          : a.base_experience - b.base_experience
-      );
-    } else if (statSort) {
-      const statKey = statSort.split("_")[0];
-      const order = statSort.split("_")[1];
-      result.sort((a, b) => {
-        const aStat =
-          a.stats.find((s) => s.stat.name === statKey)?.base_stat || 0;
-        const bStat =
-          b.stats.find((s) => s.stat.name === statKey)?.base_stat || 0;
-        return order === "desc" ? bStat - aStat : aStat - bStat;
-      });
+    // 정렬
+    if (sortOption) {
+      if (sortOption.startsWith("exp")) {
+        result.sort((a, b) =>
+          sortOption === "exp_desc"
+            ? b.base_experience - a.base_experience
+            : a.base_experience - b.base_experience
+        );
+      } else {
+        const [statKey, order] = sortOption.split("_");
+        result.sort((a, b) => {
+          const aStat = a.stats.find((s) => s.stat.name === statKey)?.base_stat || 0;
+          const bStat = b.stats.find((s) => s.stat.name === statKey)?.base_stat || 0;
+          return order === "desc" ? bStat - aStat : aStat - bStat;
+        });
+      }
     } else {
       switch (nameSort) {
         case "korean_asc":
@@ -99,7 +97,7 @@ const Main = () => {
     }
 
     setFilteredList(result);
-  }, [poketmonList, selectedType, nameSort, expSort, statSort]);
+  }, [poketmonList, selectedType, nameSort, sortOption]);
 
   const handleLoadMore = () => {
     setVisibleCount((prevCount) => Math.min(prevCount + 30, 300));
@@ -114,10 +112,8 @@ const Main = () => {
         setSelectedType={setSelectedType}
         nameSort={nameSort}
         setNameSort={setNameSort}
-        expSort={expSort}
-        setExpSort={setExpSort}
-        statSort={statSort}
-        setStatSort={setStatSort}
+        sortOption={sortOption}
+        setSortOption={setSortOption}
       />
       <div className="poketmon_grid">
         {filteredList.slice(0, visibleCount).map((poketmon, index) => (

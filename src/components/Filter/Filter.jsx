@@ -1,3 +1,4 @@
+import React from "react";
 import "./Filter.scss";
 
 const FilterBar = ({
@@ -5,8 +6,8 @@ const FilterBar = ({
   setSelectedType,
   nameSort,
   setNameSort,
-  expStatSort,
-  setExpStatSort,
+  sortOption,
+  setSortOption,
 }) => {
   return (
     <div className="filter_bar">
@@ -20,20 +21,14 @@ const FilterBar = ({
       </select>
 
       {/* 이름(가나다) 정렬 */}
-      <select
-        value={nameSort}
-        onChange={(e) => setNameSort(e.target.value)}
-      >
+      <select value={nameSort} onChange={(e) => setNameSort(e.target.value)}>
         <option value="id">번호순</option>
         <option value="korean_asc">가나다순</option>
         <option value="korean_desc">가나다 역순</option>
       </select>
 
       {/* 경험치/능력치 통합 정렬 */}
-      <select
-        value={expStatSort}
-        onChange={(e) => setExpStatSort(e.target.value)}
-      >
+      <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
         <option value="">경험치/능력치</option>
         <option value="exp_desc">경험치 높은 순</option>
         <option value="exp_asc">경험치 낮은 순</option>
