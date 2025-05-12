@@ -5,6 +5,7 @@ import { useFavorite } from "../../context/FavoriteContext";
 import PoketmonCard from "../../components/PoketmonCard/PoketmonCard";
 import { Link } from "react-router-dom";
 import FilterBar from "../../components/Filter/Filter";
+import LoadMoreButton from "../../components/LoadmoreButton/LoadMoreButton";
 
 const Main = () => {
   const [poketmonList, setPoketmonList] = useState([]);
@@ -16,13 +17,15 @@ const Main = () => {
   const [expSort, setExpSort] = useState("");
   const [statSort, setStatSort] = useState("");
 
+  const [visibleCount, setVisibleCount] = useState(30); // 초기에는 30개 표시
+
   const { favorites, toggleFavorite } = useFavorite();
 
   useEffect(() => {
     const fetchPoketmons = async () => {
       try {
         const response = await axios.get(
-          "https://pokeapi.co/api/v2/pokemon?limit=151"
+          "https://pokeapi.co/api/v2/pokemon?limit=300"
         );
         const { results } = response.data;
 
@@ -98,6 +101,10 @@ const Main = () => {
     setFilteredList(result);
   }, [poketmonList, selectedType, nameSort, expSort, statSort]);
 
+  const handleLoadMore = () => {
+    setVisibleCount((prevCount) => Math.min(prevCount + 30, 300));
+  };
+
   if (loading) return <div className="loading">로딩 중...</div>;
 
   return (
@@ -113,7 +120,7 @@ const Main = () => {
         setStatSort={setStatSort}
       />
       <div className="poketmon_grid">
-        {filteredList.map((poketmon, index) => (
+        {filteredList.slice(0, visibleCount).map((poketmon, index) => (
           <Link
             key={poketmon.id}
             to={`/detail/${poketmon.id}`}
@@ -128,6 +135,9 @@ const Main = () => {
           </Link>
         ))}
       </div>
+      {visibleCount < filteredList.length && (
+        <LoadMoreButton onClick={handleLoadMore} />
+      )}
     </div>
   );
 };
